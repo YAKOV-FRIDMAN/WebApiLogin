@@ -1,0 +1,64 @@
+﻿<html>
+<head>
+    <link href="twitter-bootstrap/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="twitter-bootstrap/js/bootstrap.min.js"></script>
+    <script src="jquery/jquery.min.js"></script>
+    <link href="StyleSheet.css" rel="stylesheet" />
+    <!------ Include the above in your HEAD tag ---------->
+</head>
+<body>
+    <div class="wrapper fadeInDown">
+        <div id="formContent">
+            <!-- Tabs Titles -->
+            <!-- Icon -->
+            <div class="fadeIn first">
+                <img src="https://icons-for-free.com/iconfiles/png/512/client+person+photo+picture+profile+user+icon-1320184631024101186.png"  id="icon" alt="User Icon" />
+            </div>
+            <!-- Login Form -->
+            <form method="post">
+                <input type="text" id="login" class="fadeIn second" name="user" placeholder="login">
+                <input type="text" id="password" class="fadeIn third" name="password" placeholder="password">
+                <input id="submit" type="button" class="fadeIn fourth" value="Log In">
+            </form>
+            <!-- Remind Passowrd -->
+            <div id="formFooter">
+                <a class="underlineHover" href="#">Forgot Password?</a>
+            </div>
+        </div>
+    </div>
+    <script>
+
+        $(document).ready(function () {
+
+            var extra_data = "This is more stuff to send";
+            var myuser = {
+                User: "user1",
+                Password: "pass1"
+            };
+  
+            $('#submit').click(function () {
+               
+                myuser.User = $('#login').val();
+                myuser.Password = $('#password').val();
+                fetch("api/AppTest/login", {
+                    method: "POST",
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(myuser)
+                })
+                    .then(response => response.json())
+                    .then((key) => {
+                        alert("ok" + key);
+                        localStorage.setItem('secretKey', key);
+                      //   document.cookie = "secretKey " + key;
+                        document.cookie = `secretKey=${key}`;
+                        window.open("Home.html")
+                    })
+                    .catch(error => console.error("error:" + error));
+            });
+        });
+    </script>
+</body>
+</html>
